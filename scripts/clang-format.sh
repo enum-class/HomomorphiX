@@ -2,5 +2,5 @@
 
 for run in {1..2}
 do
-  git clang-format HEAD^ -- include/*.h src/*.cpp tests/*.cpp libs/*.cpp libs/*.h -f
+  git clang-format-15 HEAD^ -- include/*.hpp include/*/*.hpp tests/*/*.cpp -f
 done
