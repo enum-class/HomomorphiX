@@ -2,7 +2,7 @@
 
 ## Number operations
 1. safe operator
-    1. cast
+    1. cast => DONE
     2. multiply
     3. add
     4. sub
