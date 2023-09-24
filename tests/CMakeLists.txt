@@ -14,9 +14,9 @@ add_test(IntegralTests RunIntegralTests)
 
 #----------
 set(TRAITS_TESTS
-    integral/traits-test.cpp)
+    traits/traits-test.cpp)
 
-add_executable(RunTraitsTests ${INTEGRAL_TESTS})
+add_executable(RunTraitsTests ${TRAITS_TESTS})
 target_link_libraries(RunTraitsTests GTest::gtest GTest::gtest_main HOMOMORPHIX_LIB)
 
 add_test(TraitsTests RunTraitsTests)

@@ -7,8 +7,8 @@
     3. add
     4. sub
     5. divide round up
-2. hamming weight
 3. bit operators
+    2. hamming weight
     1. reverse
     2. get_msb_index_generic
     3. Count Leading Zeros for a 128-bit Unsigned Integer
@@ -24,8 +24,8 @@
     1. divide
     1. multiply
 10. GetDigits
-11. GreatestCommonDivisor
-12. MillerRabinPrimalityTest
+11. GreatestCommonDivisor == std::gcd
+12. MillerRabinPrimalityTest ??????????????? MOVE to Poly or numer theory
 13. PrimeFactorize
 14. NextPowerOfTwo
 15. phi of n which is the number of integers m coprime to n such that 1 <= m <= n (mi's such that 1 <= mi <= n and gcd(mi,n)==1)

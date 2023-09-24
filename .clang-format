@@ -10,4 +10,5 @@ AllowShortCaseLabelsOnASingleLine: true
 SpaceAfterTemplateKeyword: false
 AllowShortBlocksOnASingleLine: true
 ConstructorInitializerAllOnOneLineOrOnePerLine: false
+ColumnLimit: 100
 ...
