@@ -6,8 +6,14 @@
 
 namespace hx::traits {
 
-template<typename T>
-inline constexpr bool is_u = sizeof(unsigned int) == sizeof(T) && std::is_unsigned_v<T>;
+template<typename t>
+inline constexpr bool is_uc = sizeof(unsigned char) == sizeof(t) && std::is_unsigned_v<t>;
+
+template<typename t>
+inline constexpr bool is_us = sizeof(unsigned short int) == sizeof(t) && std::is_unsigned_v<t>;
+
+template<typename t>
+inline constexpr bool is_u = sizeof(unsigned int) == sizeof(t) && std::is_unsigned_v<t>;
 
 template<typename T>
 inline constexpr bool is_ul = sizeof(unsigned long int) == sizeof(T) && std::is_unsigned_v<T>;
@@ -22,12 +28,14 @@ template<typename T>
 concept Integral = std::is_integral_v<T>;
 
 template<typename T>
+concept Unsigned = std::is_unsigned_v<T>;
+
+template<typename T>
 concept Float = std::is_floating_point_v<T>;
 
 template<typename From, typename To>
 concept NumericallyConvertible =
-    std::is_arithmetic_v<To> && std::is_arithmetic_v<From> &&
-    std::convertible_to<From, To>;
+    std::is_arithmetic_v<To> && std::is_arithmetic_v<From> && std::convertible_to<From, To>;
 
 template<typename From, typename To, typename = void>
 struct is_narrowing_impl : std::true_type {};

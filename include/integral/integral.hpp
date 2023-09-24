@@ -43,8 +43,7 @@ template<typename From, typename To>
 
 template<typename To, typename From>
   requires traits::NumericallyConvertible<From, To>
-[[nodiscard]] inline constexpr std::optional<To> secure_cast(
-    From from) noexcept {
+[[nodiscard]] inline constexpr std::optional<To> secure_cast(From from) noexcept {
   if (is_value_fittable<From, To>(from)) return static_cast<To>(from);
   return std::nullopt;
 }
@@ -85,6 +84,10 @@ template<traits::Integral T, traits::Integral... Args>
   return secure_add(secure_add(in1, in2), secure_add(std::forward<Args>(args)...));
 }
 
+template<traits::Integral T> [[nodiscard]] inline constexpr T secure_inc(T a) noexcept {
+  return secure_add(a, T{ 1 });
+}
+
 template<traits::Integral T>
 [[nodiscard]] inline constexpr std::optional<T> secure_sub(T a, T b) noexcept {
   if constexpr (__has_builtin(__builtin_sub_overflow)) {
@@ -98,6 +101,10 @@ template<traits::Integral T>
   }
 }
 
+template<traits::Integral T> [[nodiscard]] inline constexpr T secure_dec(T a) noexcept {
+  return secure_sub(a, T{ 1 });
+}
+
 template<traits::Float T> [[nodiscard]] inline constexpr bool near(T value1, T value2) noexcept {
   T scale_factor = std::max<T>({ std::fabs(value1), std::fabs(value2), T{ 1.0 } });
   return std::fabs(value1 - value2) < std::numeric_limits<T>::epsilon() * scale_factor;
@@ -109,7 +116,7 @@ template<traits::Integral T> inline constexpr bool is_power_of_two(T value) noex
 
 template<traits::Integral T>
 [[nodiscard]] inline constexpr std::optional<size_t> msb(T value) noexcept {
-    // TODO: move to bitwise
+  // TODO: move to bitwise
   if (value == T{ 0 }) return std::nullopt;
 
   int (*operation)(T) = nullptr;
@@ -132,6 +139,23 @@ template<traits::Integral T>
     if (auto idx = msb(value); idx) return secure_add(*idx, size_t{ 1 });
 
   return std::nullopt;
+}
+
+template<traits::Unsigned T>
+[[nodiscard]] inline constexpr bool is_prime(T value) noexcept a
+    // TODO:
+    return false;
+}
+
+template<traits::Unsigned T>
+[[nodiscard]] inline constexpr std::vector<T> get_prime_factors(T value) noexcept {
+  // TODO:
+  return {};
+}
+
+template<traits::Unsigned T> [[nodiscard]] inline constexpr T get_next_prime(T value) noexcept {
+  // TODO:
+  return T{ 0 };
 }
 
 }  // namespace hx::integral
