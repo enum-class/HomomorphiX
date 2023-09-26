@@ -6,6 +6,9 @@
 
 namespace hx::traits {
 
+__extension__ typedef __int128 int128_t;
+__extension__ typedef unsigned __int128 uint128_t;
+
 template<typename t>
 inline constexpr bool is_uc = sizeof(unsigned char) == sizeof(t) && std::is_unsigned_v<t>;
 

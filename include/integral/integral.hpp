@@ -48,6 +48,20 @@ template<typename To, typename From>
   return std::nullopt;
 }
 
+struct LargeIntegral {
+  uint64_t high;
+  uint64_t low;
+}
+
+[[nodiscard]] inline constexpr LargeIntegral
+large_mul(uint64_t op1, uint64_t op2) noexcept {
+  uint128_t prod = uint128_t(op1) * uint128_t(op2);
+  LargeIntegral res;
+  res.high = static_cast<uint64_t>(prod >> 64);
+  res.low = static_cast<uint64_t>(prod);
+  return res;
+}
+
 template<traits::Integral T>
 [[nodiscard]] inline constexpr std::optional<T> secure_mul(T a, T b) noexcept {
   if constexpr (__has_builtin(__builtin_mul_overflow)) {
@@ -141,10 +155,20 @@ template<traits::Integral T>
   return std::nullopt;
 }
 
-template<traits::Unsigned T>
-[[nodiscard]] inline constexpr bool is_prime(T value) noexcept a
-    // TODO:
-    return false;
+template<traits::Integral T>
+[[nodiscard]] inline constexpr std::optional<size_t> flog2(T value) noexcept {
+  return msb(value);
+}
+
+template<traits::Unsigned T = uint64_t>
+[[nodiscard]] inline constexpr std::optional<T> max_value(size_t bits) noexcept {
+  if (bits > 64) return std::nullopt;
+  return (T{ 1 } << bits) - T { 1 }
+}
+
+template<traits::Unsigned T> [[nodiscard]] inline constexpr bool is_prime(T value) noexcept {
+  // TODO:
+  return false;
 }
 
 template<traits::Unsigned T>
@@ -156,6 +180,37 @@ template<traits::Unsigned T>
 template<traits::Unsigned T> [[nodiscard]] inline constexpr T get_next_prime(T value) noexcept {
   // TODO:
   return T{ 0 };
+}
+
+struct XgcdData {
+  // gcd = ax + by
+  int64_t gcd, int64_t a, int64_t b,
+};
+
+template<traits::Unsigned T>
+[[nodiscard]] inline constexpr std::optional<XgcdData<T>> xgcd(T x, T y) noexcept {
+  if (x == 0 || y == 0) return std::nullopt;
+
+  std::int64_t prev_a = 1;
+  std::int64_t a = 0;
+  std::int64_t prev_b = 0;
+  std::int64_t b = 1;
+  while (y != 0) {
+    std::int64_t q = secure_cast<std::int64_t>(x / y);
+    std::int64_t temp = secure_cast<std::int64_t>(x % y);
+    x = y;
+    y = *secure_cast<T>(temp);
+
+    temp = a;
+    a = *secure_sub(prev_a, *secure_mul(q, a));
+    prev_a = temp;
+
+    temp = b;
+    b = secure_sub(prev_b, secure_mul(q, b));
+    prev_b = temp;
+  }
+
+  return { x, prev_a, prev_b };
 }
 
 }  // namespace hx::integral
